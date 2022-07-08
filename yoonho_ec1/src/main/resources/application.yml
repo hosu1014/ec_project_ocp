@@ -1,0 +1,16 @@
+#Datasource Configuration
+spring:
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 12345
+ 
+#mybatis:
+#  config-location: classpath:/mybatis/mybatis-config.xml
+#  mapper-locations: classpath:/mybatis/mappers/**/*.xml
+#  configuration:
+#    map-underscore-to-camel-case: true
+#  type-aliases-package: com.plateer.ec1.common.vo
+#    - com.plateer.ec1.claim.vo
+

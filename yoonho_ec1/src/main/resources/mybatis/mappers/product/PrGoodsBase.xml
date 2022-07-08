@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plateer.ec1.product.dao.PrGoodsBaseDao">
+
+    <select id="getGoodsList" resultType="Goods" parameterType="GoodsReq">
+	    with 
+	    pr_goods as (
+	    <foreach item="goods" collection="reqList" separator="union all">
+			select #{goods.goodsNo} as goods_no, #{goods.itemNo} as item_no
+		</foreach>
+	    )
+    	select g.goods_no 
+		     , g.goods_nm 
+		     , i.item_no 
+		     , i.item_nm 
+		     , g.goods_tp_cd 
+		     , g.sale_prc 
+		     , g.prm_prc 
+		     , g.prgs_stat_cd 
+    	  from pr_goods pg 
+    	 inner join pr_goods_base g on (pg.goods_no = g.goods_no)
+    	 inner join pr_item_info i on (pg.goods_no = i.goods_no and pg.item_no = i.item_no)
+    	 where g.prgs_stat_cd = '20'
+    </select>
+    
+</mapper>

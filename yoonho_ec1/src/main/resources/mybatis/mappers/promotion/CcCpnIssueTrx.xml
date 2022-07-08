@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plateer.ec1.promotion.dao.CcCpnIssueTrxDao">
+	
+	<insert id="insertCcCpnIssue" parameterType="CcCpnIssue">
+		insert into cc_cpn_issue(prm_no, mbr_no, org_cpn_iss_no, sys_reg_dtime, sys_regr_id, sys_mod_dtime, sys_modr_id)
+		values(#{prmNo}, #{mbrNo}, #{orgCpnIssNo}, now(), #{sysRegrId}, now(), #{sysRegrId})
+	</insert>    
+    
+    <update id="updateCouponUse" parameterType="CcCpnIssue">
+    	update cc_cpn_issue 
+    	   set cpn_use_dt = now()
+    	     , ord_no = #{ordNo}
+    	     , sys_modr_id = #{sysModrId}
+    	     , sys_mod_dtime = now()
+    	 where cpn_iss_no = #{cpnIssNo} 
+    </update>
+</mapper>

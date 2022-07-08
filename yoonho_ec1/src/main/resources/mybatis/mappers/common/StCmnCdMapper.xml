@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plateer.ec1.common.dao.StCmnCdDao">
+
+    <select id="getCommonCodeList" parameterType="java.lang.String" resultType="StCmnCd" >
+    	select cmn_cd
+    	     , cmn_cd_nm as cmnCdNm
+    	     , ref_1_val
+    	  from st_cmn_cd 
+    	 where cmn_grp_cd = #{cmnGrpCd}
+    </select>
+    
+</mapper>

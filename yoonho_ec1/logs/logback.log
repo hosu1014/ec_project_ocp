@@ -1,0 +1,6 @@
+[2022-06-28 15:24:21:2317146][http-nio-8080-exec-2] INFO  c.p.ec1.config.LogTrace.TraceLog - [ca829d97a75d] |-->CommonCodeController.getCodeList(..)
+[2022-06-28 15:24:21:2317158][http-nio-8080-exec-2] INFO  c.p.ec1.config.LogTrace.TraceLog - [ca829d97a75d] |  |-->StCmnCdServiceImpl.getCommonCodeList(..)
+[2022-06-28 15:24:21:2317163][http-nio-8080-exec-2] INFO  c.p.ec1.config.LogTrace.TraceLog - [ca829d97a75d] |  |  |-->StCmnCdDao.getCommonCodeList(..)
+[2022-06-28 15:24:21:2317775][http-nio-8080-exec-2] INFO  c.p.ec1.config.LogTrace.TraceLog - [ca829d97a75d] |  |  |<O-StCmnCdDao.getCommonCodeList(..) time=612ms
+[2022-06-28 15:24:21:2317775][http-nio-8080-exec-2] INFO  c.p.ec1.config.LogTrace.TraceLog - [ca829d97a75d] |  |<O-StCmnCdServiceImpl.getCommonCodeList(..) time=617ms
+[2022-06-28 15:24:21:2317775][http-nio-8080-exec-2] INFO  c.p.ec1.config.LogTrace.TraceLog - [ca829d97a75d] |<O-CommonCodeController.getCodeList(..) time=629ms

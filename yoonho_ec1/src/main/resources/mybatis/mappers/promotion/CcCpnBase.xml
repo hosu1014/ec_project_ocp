@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plateer.ec1.promotion.dao.CcCpnBaseDao">
+
+	<resultMap id="couponMap" type="CouponPromotion">
+		<result column="prm_no" property="prmNo" />
+		<result column="tot_issue_cnt" property="totIssueCnt" />
+		<result column="mbr_issue_cnt" property="mbrIssueCnt" />
+		<result column="restore" property="restore" />
+		<association property="ccCpnBase" autoMapping="true"></association>
+		<association property="ccPrmBase" autoMapping="true"></association>
+	</resultMap>
+
+    <select id="getCouponBase" parameterType="CouponDownloadReq" resultMap="couponMap" >
+    	with 
+    	cpn_down_cnt as (
+			select prm_no 
+			     , sum(case when org_cpn_iss_no is null then 1 else 0 end) tot_issue_cnt
+			     , sum(case when mbr_no = #{mbrNo} then 1 else 0 end) mbr_issue_cnt
+			     , max(case when org_cpn_iss_no = #{cpnIssNo} then 'Y' else null end) restore
+			  from cc_cpn_issue
+			 where prm_no = #{prmNo}
+			 group by prm_no
+		)
+		select c.prm_no 
+		     , c.dwl_psb_cnt 
+		     , c.psn_dwl_psb_cnt 
+		     , c.dwl_avl_strt_dd 
+		     , c.dwl_avl_end_dd 
+		     , p.prm_priod_ccd 
+		     , p.prm_strt_dt 
+		     , p.prm_end_dt 
+		     , p.prm_std_dd
+		     , p.use_yn 
+		     , coalesce(cd.tot_issue_cnt, 0) tot_issue_cnt
+		     , coalesce(cd.mbr_issue_cnt, 0) mbr_issue_cnt
+		     , coalesce(cd.restore, 'N') restore
+    	  from cc_cpn_base c
+    	 inner join cc_prm_base p on (c.prm_no = p.prm_no)
+    	 left outer join cpn_down_cnt cd on (c.prm_no = cd.prm_no)
+    	 where c.prm_no = #{prmNo}
+    </select>
+    
+    <sql id="promotion_base">
+    	prm_base as (
+			select *
+			  from (select p.prm_no
+					     , ci.cpn_iss_no 
+					     , p.prm_nm 
+					     , c.degr_ccd 
+					     , c.cpn_kind_cd 
+					     , p.min_pur_amt 
+					     , p.max_dc_amt 
+					     , p.dc_ccd 
+					     , p.dc_val
+					     , row_number() over(partition by p.prm_no) rn
+					  from cc_prm_base p
+					 inner join cc_cpn_base c on (p.prm_no = c.prm_no)
+					 inner join cc_cpn_issue ci on (p.prm_no = ci.prm_no) 
+					 where ci.mbr_no = ${mbrNo}
+					   and c.cpn_kind_cd = '${cpnKindCd}'
+					   and p.use_yn = 'Y'
+					   and ((p.prm_priod_ccd = '10' and now() between p.prm_strt_dt     and p.prm_end_dt) 
+					     or (p.prm_priod_ccd = '20' and now() between ci.sys_reg_dtime  and ci.sys_reg_dtime + interval '1 day' * p.prm_std_dd)
+					       )
+					   and ci.cpn_use_dt is null
+			       ) p 
+			 where rn &lt;= ${rn}
+		)
+    </sql>
+    
+    <sql id="target_condition">
+    	     where (not exists (select 1 from cc_prm_aply_tgt cpat where prm_no = p.prm_no and aply_tgt_ccd = '10')
+			    or exists (select 1 from cc_prm_aply_tgt cpat where prm_no = p.prm_no and aply_tgt_ccd = '10' and aply_tgt_no=p.goods_no)
+			       )
+			   and (not exists (select 1 from cc_prm_aply_tgt cpat where prm_no = p.prm_no and aply_tgt_ccd = '20')
+			    or exists (select 1 from cc_prm_aply_tgt cpat where prm_no = p.prm_no and aply_tgt_ccd = '20' and aply_tgt_no=p.cate_no)
+			       )
+			   and (not exists (select 1 from cc_prm_aply_tgt cpat where prm_no = p.prm_no and aply_tgt_ccd = '30')
+			    or exists (select 1 from cc_prm_aply_tgt cpat where prm_no = p.prm_no and aply_tgt_ccd = '30' and aply_tgt_no=p.cate_no)
+			       )
+			   and (not exists (select 1 from cc_prm_aply_tgt cpat where prm_no = p.prm_no and aply_tgt_ccd = '40')
+			    or exists (select 1 from cc_prm_aply_tgt cpat where prm_no = p.prm_no and aply_tgt_ccd = '40' and aply_tgt_no=p.entr_no)
+			       )
+    </sql>
+    
+    <resultMap id="OrderGoodsMap" type="OrderGoods">
+    	<id column ="goods_no"/>
+    	<id column ="item_no"/>
+		<result column="goods_no" 	property="goodsNo" />
+		<result column="item_no" 	property="itemNo" />
+		<collection property="promotionAplyList" ofType="PromotionAply">
+	        <result column="prm_no" 		property="prmNo" />
+	        <result column="prm_nm" 		property="prmNm" />
+			<result column="degr_ccd" 		property="degrCcd" />
+			<result column="cpn_kind_cd" 	property="cpnKindCd" />
+			<result column="cpn_iss_no" 	property="cpnIssNo" />
+			<result column="ord_bnf_amt" 	property="ordBnfAmt" />			
+			<result column="cpn_aply_yn" 	property="cpnAplyYn" />
+	    </collection>
+	</resultMap>
+    <select id="getProductCouponAplyList" parameterType="PromotionAplyReq" resultMap="OrderGoodsMap">
+        with 
+		ord_goods as (
+		<foreach item="goods" collection="orderProductList" separator="union all">
+			select #{goods.goodsNo} as goods_no, #{goods.itemNo} as item_no, coalesce(#{goods.cpnIssNo}, 0) aply_cpn_iss_no, #{goods.salePrc} sale_prc, #{goods.cateNo} as cate_no, #{goods.entrNo} entr_no, #{goods.ordQty} ord_qty
+		</foreach>			
+		), 
+		<include refid="promotion_base">
+			<property name="mbrNo" value="#{mbrNo}"/>
+			<property name="cpnKindCd" value="10"/>
+			<property name="rn" value="#{size}"/>
+		</include>, 
+		prm_goods as (
+			select p.*
+			     , g.*
+			     , case when p.dc_ccd = '10' then p.dc_val 
+			            else floor(g.sale_prc * p.dc_val / 100) 
+			       end cal_val
+			  from prm_base p 
+			     , ord_goods g
+			 where p.min_pur_amt &lt;= g.sale_prc
+		),
+		prm_tgt as (
+			select p.prm_no 
+			     , p.cpn_iss_no
+			     , p.prm_nm 
+			     , p.degr_ccd
+			     , p.cpn_kind_cd
+			     , case when p.max_dc_amt &lt; p.cal_val then p.max_dc_amt 
+			            else p.cal_val
+			       end ord_bnf_amt
+			     , p.goods_no
+			     , p.item_no
+			     , p.sale_prc
+			     , p.ord_qty
+			     , case when cpn_iss_no= aply_cpn_iss_no::numeric  then 'Y' else 'N' end cpn_aply_yn 
+			  from prm_goods p
+			 <include refid="target_condition" />
+		)
+		select p.*
+		  from prm_tgt p
+		 order by cpn_aply_yn desc, p.sale_prc desc, p.goods_no, p.item_no, p.ord_bnf_amt desc,  p.cpn_iss_no
+    </select>
+    
+    <resultMap id="CartCouponAplyMap" type="CartCouponAply">
+    	<id column ="prm_no"/>
+		<result column="prm_no" 		property="prmNo" />
+		<result column="degr_ccd" 		property="degrCcd" />
+		<result column="cpn_kind_cd" 	property="cpnKindCd" />
+		<result column="cpn_iss_no" 	property="cpnIssNo" />
+		<result column="ord_bnf_amt" 	property="ordBnfAmt" />
+		<result column="max_bnf_yn" 	property="maxBnfYn" />
+		<collection property="orderGoodsList" ofType="OrderGoods">
+	        <result column="goods_no" 	property="goodsNo" />
+	        <result column="item_no" 	property="itemNo" />
+	        <result column="sale_prc" 	property="salePrc" />
+	    </collection>
+	</resultMap>
+    <select id="getCartCouponAplyList" parameterType="PromotionAplyReq" resultMap="CartCouponAplyMap">
+    	with 
+		ord_goods as (
+		<foreach item="goods" collection="orderProductList" separator="union all">
+			select #{goods.goodsNo} as goods_no, #{goods.itemNo} as item_no, #{goods.salePrc} sale_prc, #{goods.cateNo} as cate_no, #{goods.entrNo} entr_no, #{goods.ordQty} ord_qty
+		</foreach>			
+		), 
+		<include refid="promotion_base">
+			<property name="mbrNo" value="#{mbrNo}"/>
+			<property name="cpnKindCd" value="30"/>
+			<property name="rn" value="1"/>
+		</include>, 
+		prm_goods as (
+			select p.*
+			     , g.*
+			  from prm_base p 
+			     , ord_goods g
+		),
+		prm_tgt as (
+			select p.*
+			     , sum(p.sale_prc * p.ord_qty) over(partition by cpn_iss_no) ord_amt 
+			  from prm_goods p
+			 <include refid="target_condition" />
+		),
+		prm_aply as (
+			select p.*
+			     , case when dc_amt > max_dc_amt then max_dc_amt else dc_amt end ord_bnf_amt
+			  from (select t.*
+					     , case when dc_ccd = '10' then dc_val 
+					            else floor(ord_amt * dc_val / 100) 
+					       end dc_amt
+					  from prm_tgt t
+					 where ord_amt > min_pur_amt  
+			       ) p
+		) 		     
+		select *
+		     , case when rk=1 then 'Y' else 'N' end max_bnf_yn
+		  from (select *
+				     , dense_rank() over(order by ord_bnf_amt desc) rk
+				  from prm_aply
+		       ) p 
+    </select>
+    
+</mapper>
