@@ -1,0 +1,28 @@
+[
+  {
+    "sysRegDtime":null,
+    "sysRegrId":null,
+    "sysModDtime":null,
+    "sysModrId":null,
+    "prmNo":1,
+    "cpnIssNo":1,
+    "orgCpnIssNo":null,
+    "mbrNo":"test01",
+    "cpnCertNo":null,
+    "ordNo":null,
+    "cpnUseDt":null
+  },
+  {
+    "sysRegDtime":null,
+    "sysRegrId":null,
+    "sysModDtime":null,
+    "sysModrId":null,
+    "prmNo":1,
+    "cpnIssNo":2,
+    "orgCpnIssNo":null,
+    "mbrNo":"test01",
+    "cpnCertNo":null,
+    "ordNo":null,
+    "cpnUseDt":1657087891419
+  }
+]

@@ -91,15 +91,7 @@
     	<id column ="item_no"/>
 		<result column="goods_no" 	property="goodsNo" />
 		<result column="item_no" 	property="itemNo" />
-		<collection property="promotionAplyList" ofType="PromotionAply">
-	        <result column="prm_no" 		property="prmNo" />
-	        <result column="prm_nm" 		property="prmNm" />
-			<result column="degr_ccd" 		property="degrCcd" />
-			<result column="cpn_kind_cd" 	property="cpnKindCd" />
-			<result column="cpn_iss_no" 	property="cpnIssNo" />
-			<result column="ord_bnf_amt" 	property="ordBnfAmt" />			
-			<result column="cpn_aply_yn" 	property="cpnAplyYn" />
-	    </collection>
+		<collection property="promotionAplyList" ofType="PromotionAply" autoMapping="true" />
 	</resultMap>
     <select id="getProductCouponAplyList" parameterType="PromotionAplyReq" resultMap="OrderGoodsMap">
         with 
@@ -153,11 +145,7 @@
 		<result column="cpn_iss_no" 	property="cpnIssNo" />
 		<result column="ord_bnf_amt" 	property="ordBnfAmt" />
 		<result column="max_bnf_yn" 	property="maxBnfYn" />
-		<collection property="orderGoodsList" ofType="OrderGoods">
-	        <result column="goods_no" 	property="goodsNo" />
-	        <result column="item_no" 	property="itemNo" />
-	        <result column="sale_prc" 	property="salePrc" />
-	    </collection>
+		<collection property="orderGoodsList" ofType="OrderGoods" autoMapping="true" />
 	</resultMap>
     <select id="getCartCouponAplyList" parameterType="PromotionAplyReq" resultMap="CartCouponAplyMap">
     	with 

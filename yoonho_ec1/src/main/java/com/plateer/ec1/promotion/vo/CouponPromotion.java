@@ -34,6 +34,7 @@ public class CouponPromotion {
 		return this.prmNo.toString() + this.getMbrNo();
 	}
 
+	@JsonIgnore
 	public boolean isDownloadable() {
 		if(ObjectUtils.isEmpty(ccCpnBase)) return false;
 		if(ObjectUtils.isEmpty(ccPrmBase)) return false;
@@ -43,23 +44,27 @@ public class CouponPromotion {
 				checkMbrCnt();
 	}
 	
+	@JsonIgnore
 	public boolean isUseable() {
 		if(ObjectUtils.isEmpty(ccCpnBase)) return false;
 		if(ObjectUtils.isEmpty(ccPrmBase)) return false;
 		return ccPrmBase.isUseable(ccCpnBase.getSysRegDtime());
 	}
 	
+	@JsonIgnore
 	public boolean isRestoreable() {
 		return Constants.N.equals(this.getRestore()) 
 				&& isUseable();
 	}
 	
+	@JsonIgnore
 	public boolean checkToalCnt() {
 		if(ccCpnBase.getDwlPsbCnt() == 0) return true;
 		if(ccCpnBase.getDwlPsbCnt() > this.getTotIssueCnt()) return true;
 		return false;
 	}
 	
+	@JsonIgnore
 	public boolean checkMbrCnt() {
 		if(ccCpnBase.getPsnDwlPsbCnt() ==0) return true;
 		if(ccCpnBase.getPsnDwlPsbCnt() > this.getMbrIssueCnt()) return true;

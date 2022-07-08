@@ -1,0 +1,17 @@
+{
+  "mbrNo" : "test01", 
+  "orderProductList" : [
+    {
+      "goodsNo" : "P001",
+      "itemNo" : "1",
+      "salePrc" : "29000",
+      "ordQty" : 2
+    }, 
+    {
+      "goodsNo" : "P002",
+      "itemNo" : "1",
+      "salePrc" : "10250",
+      "ordQty" : 3
+    }
+  ]
+}

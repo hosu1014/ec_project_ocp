@@ -1,0 +1,39 @@
+{
+    "mbrNo": "test01",
+    "orderProductList": [
+        {
+            "goodsNo": "P001",
+            "itemNo": "1",
+            "goodsTpCd": null,
+            "salePrc": 29000,
+            "entrNo": null,
+            "cateNo": null,
+            "ordQty": 2,
+            "cpnIssNo": null,
+            "promotionAplyList": [
+                {
+                    "prmNo": 1,
+                    "prmNm": "상품1000원할인",
+                    "degrCcd": "1",
+                    "cpnKindCd": "10",
+                    "cpnIssNo": 9,
+                    "ordBnfAmt": 1000,
+                    "maxBnfYn": "Y",
+                    "cpnAplyYn": "N",
+                    "anotherGoodsAplyYn": "N"
+                }
+            ]
+        },
+        {
+            "goodsNo": "P002",
+            "itemNo": "1",
+            "goodsTpCd": null,
+            "salePrc": 10250,
+            "entrNo": null,
+            "cateNo": null,
+            "ordQty": 3,
+            "cpnIssNo": null,
+            "promotionAplyList": null
+        }
+    ]
+}
