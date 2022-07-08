@@ -53,7 +53,8 @@ public class CcCpnBaseDaoImpl implements CcCpnBaseDao {
 	
 	@Override
 	public List<OrderGoods> getProductCouponAplyList(PromotionAplyReq req) {
-		return null;
+		List<OrderGoods> res = JsonFileReader.getObject("promotion/service/product_coupon_res.json", new TypeReference<List<OrderGoods>>() {});
+		return res;
 	}
 	
 	@Override

@@ -17,6 +17,7 @@ import com.plateer.ec1.promotion.vo.ProductCouponRes;
 import com.plateer.ec1.promotion.vo.PromotionAply;
 import com.plateer.ec1.promotion.vo.PromotionAplyReq;
 import com.plateer.ec1.util.Constants;
+import com.plateer.ec1.util.JsonFileReader;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,8 @@ public class ProductCouponCalculation implements Calculation<ProductCouponRes>{
 	@Override
 	public ProductCouponRes getCalculationData(PromotionAplyReq req) {
 		List<OrderGoods> productCouponAplyList = cpnBaseDao.getProductCouponAplyList(req);
+//		log.info("요청정보 is {}", JsonFileReader.toJson(req));
+//		log.info("포로모션 정보 조회 데이터 {}", JsonFileReader.toJson(productCouponAplyList));
 		
 		// 타 상품적용 쿠폰 발급번호 관리용 - 제일 마지막에 타 상품 적용여부 설정할 때 사용된다. 
 		List<Long> anotherGoodsAplyCpnIssNos = new ArrayList<>();

@@ -1,0 +1,72 @@
+{
+  "mbrNo" : "test02", 
+  "orderProductList" : [
+    {
+      "goodsNo" : "P001",
+      "itemNo" : "1",
+      "salePrc" : "29000",
+      "ordQty" : 1,
+      "cpnIssNo" : 16
+    }, 
+    {
+      "goodsNo" : "P001",
+      "itemNo" : "2",
+      "salePrc" : "29000",
+      "ordQty" : 2
+    }, 
+    {
+      "goodsNo" : "P002",
+      "itemNo" : "1",
+      "salePrc" : "10250",
+      "ordQty" : 2
+    }, 
+    {
+      "goodsNo" : "P002",
+      "itemNo" : "2",
+      "salePrc" : "10250",
+      "ordQty" : 1
+    }, 
+    {
+      "goodsNo" : "P005",
+      "itemNo" : "1",
+      "salePrc" : "9000",
+      "ordQty" : 1
+    }, 
+    {
+      "goodsNo" : "P005",
+      "itemNo" : "2",
+      "salePrc" : "9000",
+      "ordQty" : 1
+    }, 
+    {
+      "goodsNo" : "P005",
+      "itemNo" : "3",
+      "salePrc" : "9000",
+      "ordQty" : 3
+    }, 
+    {
+      "goodsNo" : "P006",
+      "itemNo" : "1",
+      "salePrc" : "140000",
+      "ordQty" : 1
+    }, 
+    {
+      "goodsNo" : "P007",
+      "itemNo" : "1",
+      "salePrc" : "24000",
+      "ordQty" : 1
+    }, 
+    {
+      "goodsNo" : "P007",
+      "itemNo" : "2",
+      "salePrc" : "24000",
+      "ordQty" : 2
+    }, 
+    {
+      "goodsNo" : "P007",
+      "itemNo" : "3",
+      "salePrc" : "24000",
+      "ordQty" : 1
+    }  
+  ]
+}

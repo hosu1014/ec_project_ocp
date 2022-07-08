@@ -12,7 +12,7 @@ public class JsonFileReader {
 	private static final String TEST_RESOURCE_PATH = "./src/test/java/com/plateer/ec1/resource/";
 	
 	public static <T> T getObject(String fileName, Class<T> valueType) {
-		Path currentFile = Paths.get(TEST_RESOURCE_PATH+ fileName);
+		Path currentFile = Paths.get(TEST_RESOURCE_PATH + fileName);
 		ObjectMapper mapper = new ObjectMapper();
 		
 		T t=null;
@@ -26,7 +26,7 @@ public class JsonFileReader {
 	}
 	
 	public static <T> T getObject(String fileName, TypeReference<T> valueTypeRef) {
-		Path currentFile = Paths.get(TEST_RESOURCE_PATH+ fileName);
+		Path currentFile = Paths.get(TEST_RESOURCE_PATH + fileName);
 		ObjectMapper mapper = new ObjectMapper();
 		
 		T t=null;
